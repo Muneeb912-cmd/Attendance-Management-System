@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/attendanceList">
+
+    <fragment
+        android:id="@+id/login_Signup"
+        android:name="com.example.attendancemanagement.ui.Login_Signup"
+        android:label="fragment_login__signup"
+        tools:layout="@layout/fragment_login__signup" />
+    <fragment
+        android:id="@+id/attendanceList"
+        android:name="com.example.attendancemanagement.ui.AttendanceList"
+        android:label="fragment_attendance_list"
+        tools:layout="@layout/attendance_main" />
+</navigation>
