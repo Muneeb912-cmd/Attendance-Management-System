@@ -8,6 +8,9 @@
             android:icon="@drawable/ic_home"
             android:title="@string/home"/>
 
+        <item android:id="@+id/addSessionClass"
+            android:icon="@drawable/ic_add_card"
+            android:title="@string/add_session_class"/>
 
     </group>
     <item

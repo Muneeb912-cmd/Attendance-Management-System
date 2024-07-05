@@ -7,11 +7,16 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label=""
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.AttendanceManagement.Light"
+        android:windowSoftInputMode="stateVisible|adjustResize"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.google.android.gms.client_id"
+            android:value="@string/server_client_id" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true">

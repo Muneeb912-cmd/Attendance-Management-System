@@ -3,16 +3,53 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/attendanceList">
+    app:startDestination="@id/login_Signup">
 
     <fragment
         android:id="@+id/login_Signup"
-        android:name="com.example.attendancemanagement.ui.Login_Signup"
+        android:name="com.example.attendancemanagement.ui.LoginSignup"
         android:label="fragment_login__signup"
-        tools:layout="@layout/fragment_login__signup" />
+        tools:layout="@layout/fragment_login__signup" >
+        <action
+            android:id="@+id/action_login_Signup_to_attendanceMain22"
+            app:destination="@id/attendanceMain2"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/action_login_Signup_to_studentDetails"
+            app:destination="@id/studentDetails"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
     <fragment
-        android:id="@+id/attendanceList"
-        android:name="com.example.attendancemanagement.ui.AttendanceList"
-        android:label="fragment_attendance_list"
-        tools:layout="@layout/attendance_main" />
+        android:id="@+id/attendanceMain2"
+        android:name="com.example.attendancemanagement.ui.AttendanceMain"
+        android:label="AttendanceMain" >
+        <action
+            android:id="@+id/action_attendanceMain2_to_login_Signup"
+            app:destination="@id/login_Signup"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/action_attendanceMain2_to_addSessionClass2"
+            app:destination="@id/addSessionClass2"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/addSessionClass2"
+        android:name="com.example.attendancemanagement.ui.AddSessionClass"
+        android:label="fragment_add_session_class"
+        tools:layout="@layout/fragment_add_session_class" />
+    <fragment
+        android:id="@+id/studentDetails"
+        android:name="com.example.attendancemanagement.ui.StudentDetails"
+        android:label="fragment_student_details"
+        tools:layout="@layout/fragment_student_details" >
+        <action
+            android:id="@+id/action_studentDetails_to_login_Signup"
+            app:destination="@id/login_Signup"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
 </navigation>

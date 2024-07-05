@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "69778620966",
+    "project_id": "fir-project-1f2f1",
+    "storage_bucket": "fir-project-1f2f1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:69778620966:android:2d300eea1a826c53f41ce7",
+        "android_client_info": {
+          "package_name": "com.example.attendancemanagement"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "69778620966-bv95sn60b9avhvjgru2a230qbafo597b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.attendancemanagement",
+            "certificate_hash": "1e8ad79493f7e343c15be38dc7ecadf7dc8976e7"
+          }
+        },
+        {
+          "client_id": "69778620966-oo4s489kdq1obekd4bfbjg1fnucp27us.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB39Q9_Xb64ns918W8UBltOrHNzozGGaDQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "69778620966-oo4s489kdq1obekd4bfbjg1fnucp27us.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
