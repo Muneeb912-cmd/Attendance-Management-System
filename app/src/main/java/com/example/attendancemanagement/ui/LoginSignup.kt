@@ -1,6 +1,7 @@
 package com.example.attendancemanagement.ui
 
 import android.app.Activity
+import android.app.DirectAction
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,6 +14,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.attendancemanagement.R
+import com.example.attendancemanagement.models.StudentsRepository
+import com.example.attendancemanagement.models.User
+import com.example.attendancemanagement.view_model.StudentsViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -24,12 +28,15 @@ import com.google.firebase.auth.GoogleAuthProvider
 
 class LoginSignup : Fragment() {
 
-    private lateinit var auth: FirebaseAuth
-    private lateinit var googleSignInClient: GoogleSignInClient
+    private lateinit var auth: FirebaseAuth //firebase service
+    private lateinit var googleSignInClient: GoogleSignInClient //part of the Google Sign-In library,
+    private val tag = "LoginSignup"
 
-    private val signInLauncher = registerForActivityResult(
+    private val signInLauncher = registerForActivityResult( //used to start an activity and get results
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
+
+        //This code is used to initiate the Google Sign-In process and handle its result.
         val data = result.data
         if (result.resultCode == Activity.RESULT_OK) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
@@ -37,7 +44,7 @@ class LoginSignup : Fragment() {
                 val account = task.getResult(ApiException::class.java)
                 handleSignInResult(account)
             } catch (e: ApiException) {
-                Log.w(TAG, "Google sign in failed", e)
+                Log.w(tag, "Google sign in failed", e)
             }
         }
     }
@@ -56,6 +63,7 @@ class LoginSignup : Fragment() {
 
         val gso = googleSignInOptions()
 
+        // requireContext() Return the Context this fragment is currently associated with.
         googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
 
         loginWithGoogle.setOnClickListener {
@@ -71,7 +79,7 @@ class LoginSignup : Fragment() {
     }
 
     private fun handleLoginClicked(email: EditText, password: EditText) {
-        if (email.text.toString()=="m@m.com" && password.text.toString()=="12345") {
+        if (email.text.toString()=="admin@myschool.com" && password.text.toString()=="12345") {
             Toast.makeText(requireContext(), "Welcome Admin!", Toast.LENGTH_SHORT).show()
             findNavController().navigate(R.id.action_login_Signup_to_attendanceMain22)
         } else {
@@ -90,11 +98,11 @@ class LoginSignup : Fragment() {
             account?.idToken?.let {
                 firebaseAuthWithGoogle(it)
             } ?: run {
-                Log.w(TAG, "Google sign in failed: ID token is null")
+                Log.w(tag, "Google sign in failed: ID token is null")
                 updateUI(null)
             }
         } catch (e: ApiException) {
-            Log.w(TAG, "signInResult:failed code=" + e.statusCode)
+            Log.w(tag, "signInResult:failed code=" + e.statusCode)
             updateUI(null)
         }
     }
@@ -109,7 +117,7 @@ class LoginSignup : Fragment() {
                     updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
-                    Log.w(TAG, "signInWithCredential:failure", task.exception)
+                    Log.w(tag, "signInWithCredential:failure", task.exception)
                     updateUI(null)
                 }
             }
@@ -118,14 +126,21 @@ class LoginSignup : Fragment() {
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
             Toast.makeText(requireContext(),"Welcome ${user.displayName}!",Toast.LENGTH_SHORT).show()
-            findNavController().navigate(R.id.action_login_Signup_to_studentDetails)
-
+            val studentsRepository=StudentsRepository()
+            val studentsViewModel=StudentsViewModel(studentsRepository)
+            val userData=User(
+                userId = user.uid,
+                userName = user.displayName.toString(),
+                userEmail = user.email.toString(),
+                userPhoto =user.photoUrl.toString(),
+            )
+            studentsViewModel.addUser(userData)
+            val action = LoginSignupDirections.actionLoginSignupToStudentDetails(userData)
+            findNavController().navigate(action)
         } else {
             Toast.makeText(requireContext(),"User Not Authenticated!",Toast.LENGTH_SHORT).show()
         }
     }
 
-    companion object {
-        private const val TAG = "LoginSignup"
-    }
+
 }

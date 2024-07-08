@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     id ("com.google.gms.google-services")
+    id("androidx.navigation.safeargs")
 }
 
 android {
@@ -37,6 +38,7 @@ android {
     buildFeatures{
         dataBinding=true
     }
+
 }
 
 dependencies {
@@ -54,9 +56,10 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation("com.google.android.gms:play-services-auth:21.2.0")
     implementation("com.google.firebase:firebase-core:21.1.1")
-
     implementation("com.google.gms:google-services:4.4.2")
-
-
+    implementation("com.github.bumptech.glide:glide:5.0.0-rc01")
+    implementation(platform("com.google.firebase:firebase-bom:33.1.1"))
+    implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation("com.google.firebase:firebase-analytics")
 
 }
