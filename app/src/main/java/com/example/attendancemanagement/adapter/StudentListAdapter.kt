@@ -1,8 +1,7 @@
-package com.example.attendancemanagement.adapter
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ImageButton
 import android.widget.Spinner
@@ -10,11 +9,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.attendancemanagement.R
 import com.example.attendancemanagement.models.User
+import com.example.attendancemanagement.room_db.SessionClass
 
 class StudentListAdapter(
     private val dataList: List<User>,
     private val listener: OnItemClickListener,
-    private var classList: List<String> // Changed to var for mutability
+    private var classList: List<SessionClass> // Changed to var for mutability
 ) : RecyclerView.Adapter<StudentListAdapter.ViewHolder>() {
 
     interface OnItemClickListener {
@@ -49,6 +49,29 @@ class StudentListAdapter(
                 addButton.setImageResource(R.drawable.ic_add)
             }
         }
+
+        fun bind(sessionClassList: List<SessionClass>) {
+            val spinnerAdapter = ArrayAdapter(
+                itemView.context,
+                android.R.layout.simple_spinner_item,
+                sessionClassList.map { it.classTitle }
+            )
+            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            classSelector.adapter = spinnerAdapter
+
+            classSelector.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    val selectedClass = sessionClassList[position]
+                    // Here you can get the selected class id
+                    val selectedClassId = selectedClass.classId
+                    // Do something with the selectedClassId
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    // Handle case when nothing is selected
+                }
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -58,10 +81,7 @@ class StudentListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.name.text = dataList[position].userName
-        // Update Spinner (classSelector) with current classList
-        val adapter = ArrayAdapter(holder.itemView.context, android.R.layout.simple_spinner_item, classList)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        holder.classSelector.adapter = adapter
+        holder.bind(classList)
     }
 
     override fun getItemCount(): Int {
@@ -69,7 +89,7 @@ class StudentListAdapter(
     }
 
     // Method to update classList
-    fun updateClassList(newList: List<String>) {
+    fun updateClassList(newList: List<SessionClass>) {
         classList = newList
         notifyDataSetChanged()
     }
