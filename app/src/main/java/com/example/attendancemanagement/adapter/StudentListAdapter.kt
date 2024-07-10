@@ -18,13 +18,14 @@ class StudentListAdapter(
 ) : RecyclerView.Adapter<StudentListAdapter.ViewHolder>() {
 
     interface OnItemClickListener {
-        fun onButtonClick(user: User)
+        fun onButtonClick(user: User,classId:Int,isIconClicked:Boolean)
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         val name: TextView = itemView.findViewById(R.id.Add_studentName)
         val classSelector: Spinner = itemView.findViewById(R.id.classSpinner)
         val addButton: ImageButton = itemView.findViewById(R.id.Add_imageButton)
+        var classID:Int=0
 
         private var isIconClicked = false // Initial state for icon
 
@@ -36,7 +37,7 @@ class StudentListAdapter(
         override fun onClick(v: View?) {
             val position = adapterPosition
             if (position != RecyclerView.NO_POSITION && v == addButton) {
-                listener.onButtonClick(dataList[position]) // Passing user name to listener
+                listener.onButtonClick(dataList[position],classID,isIconClicked) // Passing user name to listener
                 isIconClicked = !isIconClicked // Toggle state
                 updateIcon() // Update icon after click
             }
@@ -64,7 +65,7 @@ class StudentListAdapter(
                     val selectedClass = sessionClassList[position]
                     // Here you can get the selected class id
                     val selectedClassId = selectedClass.classId
-                    // Do something with the selectedClassId
+                    classID=selectedClassId
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {

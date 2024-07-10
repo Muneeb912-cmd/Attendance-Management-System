@@ -7,12 +7,6 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "student",
     foreignKeys = [
         ForeignKey(
-            entity =Attendance::class,
-            parentColumns = ["attendanceId"],
-            childColumns = ["attendanceId"],
-            onDelete = ForeignKey.CASCADE
-        ),
-        ForeignKey(
             entity =SessionClass::class,
             parentColumns = ["classId"],
             childColumns = ["classId"],
@@ -26,11 +20,10 @@ import androidx.room.PrimaryKey
         ),
     ])
 data class Student(
-    val attendance:Boolean,
-    val attendanceId:Int=0,
     val classId:Int=0,
     val sessionId:Int=0,
     val imgUrl:String,
     @PrimaryKey (autoGenerate = false)
-    val studentId:String=""
+    val studentId:String="",
+    val studentName:String
 )

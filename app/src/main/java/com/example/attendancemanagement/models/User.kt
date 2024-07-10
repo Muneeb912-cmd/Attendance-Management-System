@@ -6,5 +6,6 @@ data class User(
     var userId:String="",
     var userName:String="",
     var userEmail:String="",
-    var userPhoto:String=""
+    var userPhoto:String="",
+    var addedToClass:Boolean=false
 ):Serializable

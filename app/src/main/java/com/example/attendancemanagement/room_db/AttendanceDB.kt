@@ -13,7 +13,7 @@ import androidx.room.RoomDatabase
         Session::class,
         SessionClass::class,
     ],
-    version = 1
+    version = 5
 )
 abstract class AttendanceDB : RoomDatabase() {
     abstract fun attendanceDao(): AttendanceDao

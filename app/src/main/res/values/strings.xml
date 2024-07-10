@@ -15,7 +15,7 @@
     <string name="logout">LogOut</string>
     <string name="my_school">My School</string>
     <string name="create_attendance">Create Attendance</string>
-    <string name="select_date">Selected Date :</string>
+    <string name="select_date">Selected Date</string>
     <string name="pick_date">Pick date</string>
     <string name="attendance_title">Attendance Title</string>
     <string name="create">Create</string>
@@ -26,6 +26,7 @@
     <string name="class_title">Class Title</string>
     <string name="server_client_id">69778620966-oo4s489kdq1obekd4bfbjg1fnucp27us.apps.googleusercontent.com</string>
     <string name="student_list">Student List</string>
+    <string name="add_attendance">Add Attendance</string>
 
 
 </resources>

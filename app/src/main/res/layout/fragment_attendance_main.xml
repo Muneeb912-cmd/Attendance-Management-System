@@ -28,10 +28,11 @@
 
         </androidx.appcompat.widget.Toolbar>
 
-        <FrameLayout
-            android:id="@+id/attendanceRecyclerViewFrame"
-            android:layout_width="wrap_content"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/attendanceRecyclerView"
+            android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
 
     </LinearLayout>
 

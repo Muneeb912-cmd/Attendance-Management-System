@@ -38,6 +38,9 @@
             app:destination="@id/addSessionClass2"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/action_attendanceMain2_to_createAttendance"
+            app:destination="@id/createAttendance" />
     </fragment>
     <fragment
         android:id="@+id/addSessionClass2"
@@ -58,4 +61,9 @@
             android:name="UserData"
             app:argType="com.example.attendancemanagement.models.User" />
     </fragment>
+    <fragment
+        android:id="@+id/createAttendance"
+        android:name="com.example.attendancemanagement.ui.CreateAttendance"
+        android:label="fragment_create_attendance"
+        tools:layout="@layout/fragment_create_attendance" />
 </navigation>

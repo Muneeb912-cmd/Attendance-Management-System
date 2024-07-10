@@ -61,4 +61,10 @@ interface AttendanceDao {
 
     @Query("SELECT sessionId FROM session WHERE sessionTitle = :sessionTitle")
     suspend fun getSessionIdByTitle(sessionTitle: String): Int
+
+    @Upsert
+    suspend fun createAttendance(attendance: Attendance)
+
+    @Query("Select * from STUDENT where classId=:classId")
+    suspend fun getAllStudentsByClass(classId: Int):MutableList<Student>
 }

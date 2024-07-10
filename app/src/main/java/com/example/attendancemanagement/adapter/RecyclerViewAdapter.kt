@@ -4,15 +4,12 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AutoCompleteTextView
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.attendancemanagement.R
-import com.example.attendancemanagement.models.Attendance
 import com.example.attendancemanagement.models.StudentData
-import org.w3c.dom.Text
+import com.example.attendancemanagement.room_db.Attendance
 
 class RecyclerView(private val context: Context, private val items: MutableList<Any>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -74,7 +71,7 @@ class RecyclerView(private val context: Context, private val items: MutableList<
 
 
             holder1.attendanceTitle.text= currentItem.attendanceTitle
-            holder1.attendaceId.text= currentItem.attendanceID.toString()
+            holder1.attendaceId.text= currentItem.attendanceId.toString()
             holder1.attendanceCreatedOn.text= currentItem.dateCreated
 
         } else if (getItemViewType(position)==1) {

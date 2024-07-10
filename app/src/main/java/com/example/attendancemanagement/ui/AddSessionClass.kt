@@ -3,6 +3,7 @@ package com.example.attendancemanagement.ui
 import StudentListAdapter
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.attendancemanagement.R
 
 import com.example.attendancemanagement.models.AttendanceRepository
-import com.example.attendancemanagement.models.SessionClassStudent
 import com.example.attendancemanagement.models.StudentsRepository
 import com.example.attendancemanagement.models.User
 import com.example.attendancemanagement.room_db.SessionClass
@@ -79,14 +79,13 @@ class AddSessionClass : Fragment(), StudentListAdapter.OnItemClickListener {
         // Observe LiveData
         observeStudentData()
 
-
         setUpAdapter(view)
 
         return view
     }
 
     private fun observeStudentData() {
-        studentsViewModel.studentsData.observe(viewLifecycleOwner, Observer { data ->
+        studentsViewModel.unAssignedStudentsData.observe(viewLifecycleOwner, Observer { data ->
             if (data.isNotEmpty()) {
                 dataList.clear()
                 dataList.addAll(data)
@@ -97,14 +96,16 @@ class AddSessionClass : Fragment(), StudentListAdapter.OnItemClickListener {
 
     private fun observeClassesData() {
         attendanceViewModel.classesBySession.observe(viewLifecycleOwner, Observer { data ->
-            if (data.isNotEmpty()) {
+            if (data != null) {
                 classList.clear()
                 classList.addAll(data)
                 studentListAdapter.updateClassList(classList)
+                studentListAdapter.notifyDataSetChanged()
                 updateChipGroup()
             }
         })
     }
+
 
 
     private fun addButtonClicked(classTitleEditText: TextInputEditText,sessionEditText:TextInputEditText) {
@@ -124,9 +125,17 @@ class AddSessionClass : Fragment(), StudentListAdapter.OnItemClickListener {
     }
 
     private fun addClassName(className: String,sessionName:String) {
-        attendanceViewModel.addClass(sessionName,className)
+        attendanceViewModel.addClass(sessionName, className)
         attendanceViewModel.getClassesBySession(sessionName)
         studentListAdapter.updateClassList(classList)
+        studentListAdapter.notifyDataSetChanged()
+    }
+
+    private fun removeClassName(sessionClass:SessionClass) {
+        attendanceViewModel.removeClass(sessionClass)
+        classList.remove(sessionClass)
+        studentListAdapter.updateClassList(classList)
+        studentListAdapter.notifyDataSetChanged()
     }
 
     private fun updateChipGroup() {
@@ -136,9 +145,8 @@ class AddSessionClass : Fragment(), StudentListAdapter.OnItemClickListener {
                 text = sessionClass.classTitle
                 isCloseIconVisible = true
                 setOnCloseIconClickListener {
-                    //removeClass(sessionClass)
+                    removeClassName(sessionClass)
                     chipGroup.removeView(this)
-                    //studentListAdapter.notifyDataSetChanged()
                 }
             }
             chipGroup.addView(chip)
@@ -146,12 +154,34 @@ class AddSessionClass : Fragment(), StudentListAdapter.OnItemClickListener {
     }
 
 
-    override fun onButtonClick(user: User) {
-
+    override fun onButtonClick(user: User,classId:Int,isIconClicked:Boolean) {
+       if(!isIconClicked){
+           val sessionTitle= view?.findViewById<TextInputEditText>(R.id.sessionTitle)?.text.toString()
+           attendanceViewModel.addStudentToClass(user, sessionTitle,classId)
+           studentsViewModel.updateStudentStatus(user,true)
+       }else{
+           val sessionTitle= view?.findViewById<TextInputEditText>(R.id.sessionTitle)?.text.toString()
+           attendanceViewModel.removeStudentToClass(user, sessionTitle,classId)
+           studentsViewModel.updateStudentStatus(user,false)
+       }
     }
 
-    private fun checkButtonClicked(sessionText: TextInputEditText){
-        attendanceViewModel.addSession(sessionText.text.toString())
-        sessionText.isEnabled = false
+    private fun checkButtonClicked(sessionText: TextInputEditText) {
+        val sessionName = sessionText.text.toString()
+        attendanceViewModel.getClassesBySession(sessionName)
+
+        attendanceViewModel.classesBySession.observe(viewLifecycleOwner, Observer { data ->
+            if (data != null && data.isNotEmpty()) {
+                classList.clear()
+                classList.addAll(data)
+                studentListAdapter.updateClassList(classList)
+                studentListAdapter.notifyDataSetChanged()
+                updateChipGroup()
+            } else {
+                // No classes found, create a new session
+                attendanceViewModel.addSession(sessionName)
+            }
+        })
     }
+
 }

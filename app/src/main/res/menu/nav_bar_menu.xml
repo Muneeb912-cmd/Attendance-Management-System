@@ -12,6 +12,10 @@
             android:icon="@drawable/ic_add_card"
             android:title="@string/add_session_class"/>
 
+        <item android:id="@+id/addAttendance"
+            android:icon="@drawable/ic_add_note"
+            android:title="@string/add_attendance"/>
+
     </group>
     <item
         android:title="">
