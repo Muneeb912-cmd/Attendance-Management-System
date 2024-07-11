@@ -1,12 +1,11 @@
 package com.example.attendancemanagement.models
 
+import com.example.attendancemanagement.room_db.MarkAttendance
 import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.room.PrimaryKey
 import com.example.attendancemanagement.room_db.Attendance
 import com.example.attendancemanagement.room_db.AttendanceDB
 import com.example.attendancemanagement.room_db.AttendanceDao
+
 import com.example.attendancemanagement.room_db.Session
 import com.example.attendancemanagement.room_db.SessionClass
 import com.example.attendancemanagement.room_db.Student
@@ -73,6 +72,22 @@ class AttendanceRepository(context: Context) {
 
     suspend fun getStudentsByClass(classId: Int):MutableList<Student>{
         return attendanceDao.getAllStudentsByClass(classId)
+    }
+
+    suspend fun markAttendance(attendance: MarkAttendance){
+        attendanceDao.markAttendance(attendance)
+    }
+
+    suspend fun unMarkAttendance(attendance: MarkAttendance){
+        attendanceDao.markAttendance(attendance)
+    }
+
+    suspend fun getStudentAttendance(studentId:String,classId: Int):MarkAttendance{
+        return attendanceDao.getStudentAttendance(studentId,classId)
+    }
+
+    suspend fun getStudentData(studentId: String):StudentData{
+        return attendanceDao.getStudentData(studentId)
     }
 
 }

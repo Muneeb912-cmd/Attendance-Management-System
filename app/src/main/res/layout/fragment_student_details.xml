@@ -92,6 +92,7 @@
             app:cardElevation="4dp">
             <!-- Content of CardView 1 -->
             <TextView
+                android:id="@+id/studentClass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical|center_horizontal"
@@ -111,6 +112,7 @@
             app:cardElevation="4dp">
             <!-- Content of CardView 1 -->
             <TextView
+                android:id="@+id/StudentSession"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical|center_horizontal"
@@ -130,6 +132,7 @@
             app:cardElevation="4dp">
             <!-- Content of CardView 1 -->
             <TextView
+                android:id="@+id/studentAttendanceCount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical|center_horizontal"
@@ -149,6 +152,7 @@
             app:cardElevation="4dp">
             <!-- Content of CardView 1 -->
             <TextView
+                android:id="@+id/studentAbsentees"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical|center_horizontal"

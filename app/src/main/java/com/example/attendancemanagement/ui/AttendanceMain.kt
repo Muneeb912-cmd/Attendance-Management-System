@@ -24,6 +24,7 @@ import com.example.attendancemanagement.R
 import com.example.attendancemanagement.adapter.AttendanceAdapter
 import com.example.attendancemanagement.models.AttendanceRepository
 import com.example.attendancemanagement.models.StudentsRepository
+import com.example.attendancemanagement.models.User
 import com.example.attendancemanagement.room_db.Attendance
 import com.example.attendancemanagement.room_db.SessionClass
 import com.example.attendancemanagement.room_db.Student
@@ -42,7 +43,7 @@ class AttendanceMain : Fragment(), NavigationView.OnNavigationItemSelectedListen
     private lateinit var attendanceViewModel: AttendanceViewModel
     private lateinit var studentsViewModel: StudentsViewModel
     private lateinit var attendanceAdapter: AttendanceAdapter
-    private val students = mutableListOf<Student>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,7 +90,6 @@ class AttendanceMain : Fragment(), NavigationView.OnNavigationItemSelectedListen
 
         observeAttendanceData()
         setUpAdapter(view)
-        observeStudentData()
 
         return view
     }
@@ -131,14 +131,7 @@ class AttendanceMain : Fragment(), NavigationView.OnNavigationItemSelectedListen
         })
     }
 
-    private fun observeStudentData() {
-        attendanceViewModel.students.observe(viewLifecycleOwner, Observer { data ->
-            if (data != null) {
-                students.clear()
-                students.addAll(data)
-            }
-        })
-    }
+
 
     private fun setUpAdapter(view: View) {
         val recyclerView = view.findViewById<RecyclerView>(R.id.attendanceRecyclerView)
@@ -150,8 +143,8 @@ class AttendanceMain : Fragment(), NavigationView.OnNavigationItemSelectedListen
     override fun onItemClick(position: Int) {
         val attendanceId = attendanceList[position].attendanceId
         val classId = attendanceList[position].classId
-
-
+        val action = AttendanceMainDirections.actionAttendanceMain2ToMarkAttendance(classId,attendanceId)
+        findNavController().navigate(action)
 
     }
 }

@@ -1,10 +1,12 @@
 package com.example.attendancemanagement.view_model
 
+import com.example.attendancemanagement.room_db.MarkAttendance
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.attendancemanagement.models.AttendanceRepository
+import com.example.attendancemanagement.models.StudentData
 import com.example.attendancemanagement.models.User
 import com.example.attendancemanagement.room_db.Attendance
 import com.example.attendancemanagement.room_db.Session
@@ -18,6 +20,10 @@ class AttendanceViewModel(private val repository: AttendanceRepository) : ViewMo
     private val _session = MutableLiveData<List<Session>>()
     private val _attendance = MutableLiveData<List<Attendance>>()
     private val _students = MutableLiveData<MutableList<Student>>()
+    private val _studentAttendance = MutableLiveData<MutableList<MarkAttendance>>()
+    val studentAttendance: LiveData<MutableList<MarkAttendance>> get() = _studentAttendance
+
+
     val students: LiveData<MutableList<Student>> get() = _students
 
     val classesBySession: LiveData<List<SessionClass>> get() = _classesBySession
@@ -81,4 +87,26 @@ class AttendanceViewModel(private val repository: AttendanceRepository) : ViewMo
             _students.postValue(studentsList)
         }
     }
+
+    fun markAttendance(attendance: MarkAttendance){
+        viewModelScope.launch {
+            repository.markAttendance(attendance)
+        }
+    }
+
+
+    fun  getStudentAttendance(studentId: String,classId: Int, onResult: (MarkAttendance?) -> Unit) {
+        viewModelScope.launch {
+            val data = repository.getStudentAttendance(studentId,classId)
+            onResult(data)
+        }
+    }
+
+    fun getStudentData(studentId: String, onResult: (StudentData?) -> Unit) {
+        viewModelScope.launch {
+            val data = repository.getStudentData(studentId)
+            onResult(data)
+        }
+    }
+
 }

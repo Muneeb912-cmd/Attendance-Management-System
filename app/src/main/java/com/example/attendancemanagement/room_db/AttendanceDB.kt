@@ -1,5 +1,6 @@
 package com.example.attendancemanagement.room_db
 
+
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
@@ -13,7 +14,7 @@ import androidx.room.RoomDatabase
         Session::class,
         SessionClass::class,
     ],
-    version = 5
+    version = 8
 )
 abstract class AttendanceDB : RoomDatabase() {
     abstract fun attendanceDao(): AttendanceDao

@@ -5,54 +5,78 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import kotlinx.coroutines.tasks.await
 
 class StudentsRepository {
     private val db = FirebaseFirestore.getInstance()
     private val userDataCollection = db.collection("UserData")
 
-    fun addUser(data: User): User {
-        val document = userDataCollection.document()
-        data.userId = document.id
-        document.set(data)
-            .addOnSuccessListener {
+    suspend fun addUser(data: User): User? {
+        return try {
+            val existingUser = checkUserExists(data.userEmail)
+            if (existingUser != null) {
+                Log.d("FireStore", "User already exists: ${existingUser.userId}")
+                existingUser
+            } else {
+                val document = userDataCollection.document()
+                data.userId = document.id
+                document.set(data).await()
                 Log.d("FireStore", "DocumentSnapshot successfully written!")
+                data
             }
-            .addOnFailureListener { e ->
-                Log.w("FireStore", "Error writing document", e)
-            }
-        return data
+        } catch (e: Exception) {
+            Log.e("FireStore", "Error writing document", e)
+            null
+        }
     }
 
-    fun getStudentById(studentId: Int): LiveData<User?> {
+    private suspend fun checkUserExists(email: String): User? {
+        return try {
+            val documents = userDataCollection.whereEqualTo("userEmail", email).get().await()
+            if (documents.isEmpty) {
+                null
+            } else {
+                val user = documents.documents[0].toObject(User::class.java)
+                user?.userId = documents.documents[0].id
+                user
+            }
+        } catch (e: Exception) {
+            Log.e("FireStore", "Error checking if user exists", e)
+            null
+        }
+    }
+
+    fun getStudentByEmail(studentEmail: String): LiveData<User?> {
         val studentLiveData = MutableLiveData<User?>()
 
         userDataCollection
-            .whereEqualTo("userId", studentId)
+            .whereEqualTo("userEmail", studentEmail)
+            .limit(1)  // Limit to one document since we expect only one user with a specific email
             .addSnapshotListener { snapshot, exception ->
-                if (exception != null || snapshot == null) {
+                if (exception != null) {
                     Log.e("FireStore", "Error fetching document", exception)
                     studentLiveData.value = null
                     return@addSnapshotListener
                 }
 
-                val student = if (snapshot.documents.isNotEmpty()) {
+                if (snapshot != null && !snapshot.isEmpty) {
                     try {
                         val document = snapshot.documents[0]
                         val data = document.toObject(User::class.java)
                         data?.apply { userId = document.id }
+                        studentLiveData.value = data
                     } catch (e: Exception) {
                         Log.e("FireStore", "Error parsing document ${snapshot.documents[0].id}", e)
-                        null
+                        studentLiveData.value = null
                     }
                 } else {
-                    null
+                    studentLiveData.value = null
                 }
-
-                studentLiveData.value = student
             }
 
         return studentLiveData
     }
+
 
     fun getRegisteredStudents(): LiveData<List<User>> {
         val studentLiveData = MutableLiveData<List<User>>()
@@ -102,7 +126,7 @@ class StudentsRepository {
         return studentLiveData
     }
 
-    fun updateStudentStatus(data: User,status:Boolean): User {
+    fun updateStudentStatus(data: User, status: Boolean): User {
         val document = userDataCollection.document(data.userId)
         val updateMap = mapOf(
             "addedToClass" to status,
@@ -116,6 +140,5 @@ class StudentsRepository {
             }
         return data
     }
-
 
 }

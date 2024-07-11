@@ -1,5 +1,6 @@
 package com.example.attendancemanagement.ui
 
+import StudentListAdapter
 import android.app.Activity
 import android.app.DirectAction
 import android.os.Bundle
@@ -12,11 +13,14 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.attendancemanagement.R
 import com.example.attendancemanagement.models.StudentsRepository
 import com.example.attendancemanagement.models.User
 import com.example.attendancemanagement.view_model.StudentsViewModel
+import com.example.attendancemanagement.view_model.StudentsViewModelFactory
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -31,6 +35,7 @@ class LoginSignup : Fragment() {
     private lateinit var auth: FirebaseAuth //firebase service
     private lateinit var googleSignInClient: GoogleSignInClient //part of the Google Sign-In library,
     private val tag = "LoginSignup"
+    private lateinit var studentsViewModel: StudentsViewModel
 
     private val signInLauncher = registerForActivityResult( //used to start an activity and get results
         ActivityResultContracts.StartActivityForResult()
@@ -48,6 +53,14 @@ class LoginSignup : Fragment() {
             }
         }
     }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val repository = StudentsRepository()
+        val factory = StudentsViewModelFactory(repository)
+        studentsViewModel = ViewModelProvider(this, factory)[StudentsViewModel::class.java]
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,6 +87,7 @@ class LoginSignup : Fragment() {
         loginButton.setOnClickListener{
             handleLoginClicked(email, password)
         }
+
 
         return view
     }
@@ -134,7 +148,10 @@ class LoginSignup : Fragment() {
                 userEmail = user.email.toString(),
                 userPhoto =user.photoUrl.toString(),
             )
+
+
             studentsViewModel.addUser(userData)
+
             val action = LoginSignupDirections.actionLoginSignupToStudentDetails(userData)
             findNavController().navigate(action)
         } else {

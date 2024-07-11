@@ -10,7 +10,6 @@ import kotlinx.coroutines.launch
 
 class StudentsViewModel(private val repository: StudentsRepository):ViewModel() {
     val unAssignedStudentsData: LiveData<List<User>> = repository.getUnAssignedStudents()
-
     val allStudentsData: LiveData<List<User>> = repository.getRegisteredStudents()
 
     fun addUser(student: User) = viewModelScope.launch {
@@ -21,5 +20,8 @@ class StudentsViewModel(private val repository: StudentsRepository):ViewModel() 
         repository.updateStudentStatus(student,status)
     }
 
+    fun getStudentByEmail(studentEmail: String): LiveData<User?> {
+        return repository.getStudentByEmail(studentEmail)
+    }
 
 }

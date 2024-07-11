@@ -41,6 +41,9 @@
         <action
             android:id="@+id/action_attendanceMain2_to_createAttendance"
             app:destination="@id/createAttendance" />
+        <action
+            android:id="@+id/action_attendanceMain2_to_markAttendance"
+            app:destination="@id/markAttendance" />
     </fragment>
     <fragment
         android:id="@+id/addSessionClass2"
@@ -66,4 +69,14 @@
         android:name="com.example.attendancemanagement.ui.CreateAttendance"
         android:label="fragment_create_attendance"
         tools:layout="@layout/fragment_create_attendance" />
+    <fragment
+        android:id="@+id/markAttendance"
+        android:name="com.example.attendancemanagement.ui.MarkAttendance"
+        android:label="MarkAttendance" >
+        <argument
+            android:name="classId"
+            app:argType="integer" />
+        <argument android:name="attendanceId"
+            app:argType="integer" />
+    </fragment>
 </navigation>

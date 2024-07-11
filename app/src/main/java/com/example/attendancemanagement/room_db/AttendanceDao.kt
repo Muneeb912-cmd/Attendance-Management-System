@@ -1,13 +1,10 @@
 package com.example.attendancemanagement.room_db
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.room.Dao
 import androidx.room.Delete
-import androidx.room.Insert
 import androidx.room.Query
-import androidx.room.Update
 import androidx.room.Upsert
+import com.example.attendancemanagement.models.StudentData
 
 @Dao
 interface AttendanceDao {
@@ -21,7 +18,7 @@ interface AttendanceDao {
     suspend fun getAllAttendance(): List<Attendance>
 
     @Upsert
-    suspend fun markAttendance(attendance: Attendance)
+    suspend fun markAttendance(attendance: MarkAttendance)
 
     @Query("SELECT * FROM mark_attendance")
     suspend fun getAllMarkedAttendance(): List<MarkAttendance>
@@ -67,4 +64,23 @@ interface AttendanceDao {
 
     @Query("Select * from STUDENT where classId=:classId")
     suspend fun getAllStudentsByClass(classId: Int):MutableList<Student>
+
+    @Query("Select * from mark_attendance as ma Join student as s On ma.studentId=s.studentId  where ma.studentId=:studentId and s.classId=:classId")
+    suspend fun getStudentAttendance(studentId: String,classId: Int):MarkAttendance
+
+    @Query("SELECT \n" +
+            "    COUNT(CASE WHEN ma.attendance = 1 THEN ma.markAttendanceId ELSE NULL END) AS attendance,\n" +
+            "    COUNT(CASE WHEN ma.attendance = 0 THEN ma.markAttendanceId ELSE NULL END) AS absentees,\n" +
+            "    c.classTitle, \n" +
+            "    s.sessionTitle\n" +
+            "FROM session_class AS c\n" +
+            "JOIN session AS s ON s.sessionId = c.sessionId\n" +
+            "JOIN (\n" +
+            "    SELECT ss.classId, ss.studentId\n" +
+            "    FROM student AS ss\n" +
+            "    WHERE ss.studentId = :studentId\n" +
+            ") AS filtered_students ON filtered_students.classId = c.classId\n" +
+            "LEFT JOIN mark_attendance AS ma ON ma.studentId = filtered_students.studentId\n" +
+            "GROUP BY c.classTitle, s.sessionTitle\n")
+    suspend fun getStudentData(studentId: String): StudentData
 }
