@@ -1,11 +1,8 @@
 package com.example.attendancemanagement.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -22,12 +19,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.attendancemanagement.R
 import com.example.attendancemanagement.adapter.AttendanceAdapter
-import com.example.attendancemanagement.models.AttendanceRepository
-import com.example.attendancemanagement.models.StudentsRepository
-import com.example.attendancemanagement.models.User
-import com.example.attendancemanagement.room_db.Attendance
-import com.example.attendancemanagement.room_db.SessionClass
-import com.example.attendancemanagement.room_db.Student
+import com.example.attendancemanagement.models.repositories.AttendanceRepository
+import com.example.attendancemanagement.models.repositories.StudentsRepository
+import com.example.attendancemanagement.room_db.entities.Attendance
 import com.example.attendancemanagement.view_model.AttendanceViewModel
 import com.example.attendancemanagement.view_model.StudentsViewModel
 import com.example.attendancemanagement.view_model.StudentsViewModelFactory

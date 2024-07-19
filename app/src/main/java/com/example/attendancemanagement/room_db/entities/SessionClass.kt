@@ -1,4 +1,4 @@
-package com.example.attendancemanagement.room_db
+package com.example.attendancemanagement.room_db.entities
 
 import androidx.room.Entity
 import androidx.room.ForeignKey

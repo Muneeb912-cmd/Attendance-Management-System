@@ -2,7 +2,6 @@ package com.example.attendancemanagement.ui
 
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,9 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.attendancemanagement.R
 import com.example.attendancemanagement.adapter.MarkAttendanceAdapter
-import com.example.attendancemanagement.models.AttendanceRepository
-import com.example.attendancemanagement.room_db.Student
-import com.example.attendancemanagement.room_db.MarkAttendance
+import com.example.attendancemanagement.models.repositories.AttendanceRepository
+import com.example.attendancemanagement.room_db.entities.Student
+import com.example.attendancemanagement.room_db.entities.MarkAttendance
 import com.example.attendancemanagement.view_model.AttendanceViewModel
 
 
@@ -49,6 +48,8 @@ class MarkAttendance : Fragment(), MarkAttendanceAdapter.OnItemClickListener {
         }
 
         attendanceViewModel.getStudentsByClass(classId)
+        attendanceViewModel.getAllAttendance()
+
         observeStudentData()
         observeStudentAttendanceData()
 
@@ -86,7 +87,7 @@ class MarkAttendance : Fragment(), MarkAttendanceAdapter.OnItemClickListener {
 
     override fun onSwitchToggle(position: Int, isChecked: Boolean) {
 
-        val studentAttendance = studentsAttendance.getOrNull(0) // Safe access to the first item
+        val studentAttendance = studentsAttendance.getOrNull(0)
 
         val attendance = if (isChecked) {
             if (studentAttendance?.markAttendanceId != null) {

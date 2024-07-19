@@ -1,10 +1,10 @@
-package com.example.attendancemanagement.models
+package com.example.attendancemanagement.models.repositories
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.attendancemanagement.models.User
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.tasks.await
 
 class StudentsRepository {

@@ -1,17 +1,17 @@
 package com.example.attendancemanagement.view_model
 
-import com.example.attendancemanagement.room_db.MarkAttendance
+import com.example.attendancemanagement.room_db.entities.MarkAttendance
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.attendancemanagement.models.AttendanceRepository
+import com.example.attendancemanagement.models.repositories.AttendanceRepository
 import com.example.attendancemanagement.models.StudentData
 import com.example.attendancemanagement.models.User
-import com.example.attendancemanagement.room_db.Attendance
-import com.example.attendancemanagement.room_db.Session
-import com.example.attendancemanagement.room_db.SessionClass
-import com.example.attendancemanagement.room_db.Student
+import com.example.attendancemanagement.room_db.entities.Attendance
+import com.example.attendancemanagement.room_db.entities.Session
+import com.example.attendancemanagement.room_db.entities.SessionClass
+import com.example.attendancemanagement.room_db.entities.Student
 import kotlinx.coroutines.launch
 
 class AttendanceViewModel(private val repository: AttendanceRepository) : ViewModel() {
@@ -68,7 +68,7 @@ class AttendanceViewModel(private val repository: AttendanceRepository) : ViewMo
         repository.removeStudentToClass(user = user, sessionTitle = sessionTitle, classId = classId)
     }
 
-    fun createAttendance(attendance:Attendance)=viewModelScope.launch{
+    fun createAttendance(attendance: Attendance)=viewModelScope.launch{
         repository.createAttendance(attendance)
     }
 

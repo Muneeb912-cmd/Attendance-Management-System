@@ -5,6 +5,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.attendancemanagement.room_db.entities.Attendance
+import com.example.attendancemanagement.room_db.entities.MarkAttendance
+import com.example.attendancemanagement.room_db.entities.Session
+import com.example.attendancemanagement.room_db.entities.SessionClass
+import com.example.attendancemanagement.room_db.entities.Student
 
 @Database(
     entities = [
@@ -14,7 +19,7 @@ import androidx.room.RoomDatabase
         Session::class,
         SessionClass::class,
     ],
-    version = 8
+    version = 9
 )
 abstract class AttendanceDB : RoomDatabase() {
     abstract fun attendanceDao(): AttendanceDao

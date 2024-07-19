@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.attendancemanagement.R
 import com.example.attendancemanagement.models.User
-import com.example.attendancemanagement.room_db.SessionClass
+import com.example.attendancemanagement.room_db.entities.SessionClass
 
 class StudentListAdapter(
     private val dataList: List<User>,

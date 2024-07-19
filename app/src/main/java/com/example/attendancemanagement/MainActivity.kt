@@ -1,17 +1,11 @@
 package com.example.attendancemanagement
 
 import android.os.Bundle
-import android.util.Log
 
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import com.example.attendancemanagement.room_db.Attendance
-import com.example.attendancemanagement.room_db.AttendanceDB
-import com.example.attendancemanagement.room_db.AttendanceDao
 
 
 import com.google.firebase.FirebaseApp
-import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {

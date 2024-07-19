@@ -1,11 +1,9 @@
-package com.example.attendancemanagement.room_db
+package com.example.attendancemanagement.room_db.entities
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.example.attendancemanagement.room_db.Attendance
-import com.example.attendancemanagement.room_db.Student
 
 @Entity(
     tableName = "mark_attendance",

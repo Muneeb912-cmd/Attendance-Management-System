@@ -5,6 +5,11 @@ import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Upsert
 import com.example.attendancemanagement.models.StudentData
+import com.example.attendancemanagement.room_db.entities.Attendance
+import com.example.attendancemanagement.room_db.entities.MarkAttendance
+import com.example.attendancemanagement.room_db.entities.Session
+import com.example.attendancemanagement.room_db.entities.SessionClass
+import com.example.attendancemanagement.room_db.entities.Student
 
 @Dao
 interface AttendanceDao {
@@ -66,7 +71,7 @@ interface AttendanceDao {
     suspend fun getAllStudentsByClass(classId: Int):MutableList<Student>
 
     @Query("Select * from mark_attendance as ma Join student as s On ma.studentId=s.studentId  where ma.studentId=:studentId and s.classId=:classId")
-    suspend fun getStudentAttendance(studentId: String,classId: Int):MarkAttendance
+    suspend fun getStudentAttendance(studentId: String,classId: Int): MarkAttendance
 
     @Query("SELECT \n" +
             "    COUNT(CASE WHEN ma.attendance = 1 THEN ma.markAttendanceId ELSE NULL END) AS attendance,\n" +

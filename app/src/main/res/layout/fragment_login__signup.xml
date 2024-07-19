@@ -19,7 +19,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:background="@drawable/layout_border"
-                android:elevation="4dp">
+                android:elevation="10dp">
 
                 <TextView
                     android:id="@+id/tv_login_Signup"

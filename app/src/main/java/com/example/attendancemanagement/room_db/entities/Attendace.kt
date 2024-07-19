@@ -1,4 +1,4 @@
-package com.example.attendancemanagement.room_db
+package com.example.attendancemanagement.room_db.entities
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -6,13 +6,13 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "attendance",
     foreignKeys = [
         ForeignKey(
-            entity =Session::class,
+            entity = Session::class,
             parentColumns = ["sessionId"],
             childColumns = ["sessionId"],
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
-            entity =SessionClass::class,
+            entity = SessionClass::class,
             parentColumns = ["classId"],
             childColumns = ["classId"],
             onDelete = ForeignKey.CASCADE

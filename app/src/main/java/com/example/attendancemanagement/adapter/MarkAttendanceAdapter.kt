@@ -6,14 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
-import com.example.attendancemanagement.room_db.MarkAttendance
 import androidx.recyclerview.widget.RecyclerView
 import com.example.attendancemanagement.R
-import com.example.attendancemanagement.models.AttendanceRepository
-import com.example.attendancemanagement.room_db.Student
+import com.example.attendancemanagement.models.repositories.AttendanceRepository
+import com.example.attendancemanagement.room_db.entities.Student
 import com.example.attendancemanagement.view_model.AttendanceViewModel
 
 class MarkAttendanceAdapter(

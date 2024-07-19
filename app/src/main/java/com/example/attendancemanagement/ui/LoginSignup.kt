@@ -1,8 +1,6 @@
 package com.example.attendancemanagement.ui
 
-import StudentListAdapter
 import android.app.Activity
-import android.app.DirectAction
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,11 +11,10 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.attendancemanagement.R
-import com.example.attendancemanagement.models.StudentsRepository
+import com.example.attendancemanagement.models.repositories.StudentsRepository
 import com.example.attendancemanagement.models.User
 import com.example.attendancemanagement.view_model.StudentsViewModel
 import com.example.attendancemanagement.view_model.StudentsViewModelFactory
@@ -56,10 +53,33 @@ class LoginSignup : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val repository = StudentsRepository()
-        val factory = StudentsViewModelFactory(repository)
-        studentsViewModel = ViewModelProvider(this, factory)[StudentsViewModel::class.java]
+        val sharedPreferences = requireActivity().getSharedPreferences("MyAppPrefs", Activity.MODE_PRIVATE)
+        val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
+
+        if (isLoggedIn) {
+            val userId = sharedPreferences.getString("userId", null)
+            val userName = sharedPreferences.getString("userName", null)
+            val userEmail = sharedPreferences.getString("userEmail", null)
+            val userPhoto = sharedPreferences.getString("userPhoto", null)
+
+            if (userId != null && userName != null && userEmail != null && userPhoto != null) {
+                val userData = User(
+                    userId = userId,
+                    userName = userName,
+                    userEmail = userEmail,
+                    userPhoto = userPhoto,
+                )
+
+                val action = LoginSignupDirections.actionLoginSignupToStudentDetails(userData)
+                findNavController().navigate(action)
+            }
+        } else {
+            val repository = StudentsRepository()
+            val factory = StudentsViewModelFactory(repository)
+            studentsViewModel = ViewModelProvider(this, factory)[StudentsViewModel::class.java]
+        }
     }
+
 
 
     override fun onCreateView(
@@ -93,13 +113,24 @@ class LoginSignup : Fragment() {
     }
 
     private fun handleLoginClicked(email: EditText, password: EditText) {
-        if (email.text.toString()=="admin@myschool.com" && password.text.toString()=="12345") {
-            Toast.makeText(requireContext(), "Welcome Admin!", Toast.LENGTH_SHORT).show()
-            findNavController().navigate(R.id.action_login_Signup_to_attendanceMain22)
-        } else {
-            Toast.makeText(requireContext(), "Invalid Credentials!", Toast.LENGTH_SHORT).show()
+        val emailText = email.text.toString()
+        val passwordText = password.text.toString()
+
+        when {
+            emailText.isEmpty() -> email.error = "Email cannot be empty"
+            passwordText.isEmpty() -> password.error = "Password cannot be empty"
+            emailText == "admin@myschool.com" && passwordText == "12345" -> {
+                Toast.makeText(requireContext(), "Welcome Admin!", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.action_login_Signup_to_attendanceMain22)
+            }
+            else -> {
+                email.error = "Invalid Credentials"
+                password.error = "Invalid Credentials"
+                Toast.makeText(requireContext(), "Invalid Credentials!", Toast.LENGTH_SHORT).show()
+            }
         }
     }
+
 
     private fun googleSignInOptions() =
         GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -140,16 +171,26 @@ class LoginSignup : Fragment() {
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
             Toast.makeText(requireContext(),"Welcome ${user.displayName}!",Toast.LENGTH_SHORT).show()
-            val studentsRepository=StudentsRepository()
-            val studentsViewModel=StudentsViewModel(studentsRepository)
-            val userData=User(
+
+            // Save user info to SharedPreferences
+            val sharedPreferences = requireActivity().getSharedPreferences("MyAppPrefs", Activity.MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
+            editor.putString("userId", user.uid)
+            editor.putString("userName", user.displayName)
+            editor.putString("userEmail", user.email)
+            editor.putString("userPhoto", user.photoUrl.toString())
+            editor.putBoolean("isLoggedIn", true)
+            editor.apply()
+
+            val userData = User(
                 userId = user.uid,
                 userName = user.displayName.toString(),
                 userEmail = user.email.toString(),
-                userPhoto =user.photoUrl.toString(),
+                userPhoto = user.photoUrl.toString(),
             )
 
-
+            val studentsRepository = StudentsRepository()
+            val studentsViewModel = StudentsViewModel(studentsRepository)
             studentsViewModel.addUser(userData)
 
             val action = LoginSignupDirections.actionLoginSignupToStudentDetails(userData)
@@ -160,4 +201,14 @@ class LoginSignup : Fragment() {
     }
 
 
+    private fun saveUserLoginInfo(user: FirebaseUser) {
+        val sharedPreferences = requireContext().getSharedPreferences("UserPrefs", Activity.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putBoolean("isLoggedIn", true)
+        editor.putString("userId", user.uid)
+        editor.putString("userName", user.displayName)
+        editor.putString("userEmail", user.email)
+        editor.putString("userPhoto", user.photoUrl.toString())
+        editor.apply()
+    }
 }

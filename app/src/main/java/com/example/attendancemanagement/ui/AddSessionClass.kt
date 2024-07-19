@@ -3,11 +3,9 @@ package com.example.attendancemanagement.ui
 import StudentListAdapter
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -17,10 +15,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.attendancemanagement.R
 
-import com.example.attendancemanagement.models.AttendanceRepository
-import com.example.attendancemanagement.models.StudentsRepository
+import com.example.attendancemanagement.models.repositories.AttendanceRepository
+import com.example.attendancemanagement.models.repositories.StudentsRepository
 import com.example.attendancemanagement.models.User
-import com.example.attendancemanagement.room_db.SessionClass
+import com.example.attendancemanagement.room_db.entities.SessionClass
 import com.example.attendancemanagement.view_model.AttendanceViewModel
 import com.example.attendancemanagement.view_model.StudentsViewModel
 import com.example.attendancemanagement.view_model.StudentsViewModelFactory
@@ -131,7 +129,7 @@ class AddSessionClass : Fragment(), StudentListAdapter.OnItemClickListener {
         studentListAdapter.notifyDataSetChanged()
     }
 
-    private fun removeClassName(sessionClass:SessionClass) {
+    private fun removeClassName(sessionClass: SessionClass) {
         attendanceViewModel.removeClass(sessionClass)
         classList.remove(sessionClass)
         studentListAdapter.updateClassList(classList)

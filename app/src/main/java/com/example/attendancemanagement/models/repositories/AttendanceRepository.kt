@@ -1,14 +1,16 @@
-package com.example.attendancemanagement.models
+package com.example.attendancemanagement.models.repositories
 
-import com.example.attendancemanagement.room_db.MarkAttendance
+import com.example.attendancemanagement.room_db.entities.MarkAttendance
 import android.content.Context
-import com.example.attendancemanagement.room_db.Attendance
+import com.example.attendancemanagement.models.StudentData
+import com.example.attendancemanagement.models.User
+import com.example.attendancemanagement.room_db.entities.Attendance
 import com.example.attendancemanagement.room_db.AttendanceDB
 import com.example.attendancemanagement.room_db.AttendanceDao
 
-import com.example.attendancemanagement.room_db.Session
-import com.example.attendancemanagement.room_db.SessionClass
-import com.example.attendancemanagement.room_db.Student
+import com.example.attendancemanagement.room_db.entities.Session
+import com.example.attendancemanagement.room_db.entities.SessionClass
+import com.example.attendancemanagement.room_db.entities.Student
 
 class AttendanceRepository(context: Context) {
     private var db: AttendanceDB = AttendanceDB.getInstance(context)
@@ -82,11 +84,11 @@ class AttendanceRepository(context: Context) {
         attendanceDao.markAttendance(attendance)
     }
 
-    suspend fun getStudentAttendance(studentId:String,classId: Int):MarkAttendance{
+    suspend fun getStudentAttendance(studentId:String,classId: Int): MarkAttendance {
         return attendanceDao.getStudentAttendance(studentId,classId)
     }
 
-    suspend fun getStudentData(studentId: String):StudentData{
+    suspend fun getStudentData(studentId: String): StudentData {
         return attendanceDao.getStudentData(studentId)
     }
 

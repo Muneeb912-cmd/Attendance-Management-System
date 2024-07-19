@@ -3,7 +3,6 @@ package com.example.attendancemanagement.ui
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,10 +15,10 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.example.attendancemanagement.R
-import com.example.attendancemanagement.models.AttendanceRepository
-import com.example.attendancemanagement.room_db.Attendance
-import com.example.attendancemanagement.room_db.Session
-import com.example.attendancemanagement.room_db.SessionClass
+import com.example.attendancemanagement.models.repositories.AttendanceRepository
+import com.example.attendancemanagement.room_db.entities.Attendance
+import com.example.attendancemanagement.room_db.entities.Session
+import com.example.attendancemanagement.room_db.entities.SessionClass
 import com.example.attendancemanagement.view_model.AttendanceViewModel
 import com.google.android.material.button.MaterialButton
 import java.util.Calendar
@@ -138,7 +137,7 @@ class CreateAttendance : Fragment() {
         selectedClassId: Int,
 
         ) {
-        val attendance=Attendance(
+        val attendance= Attendance(
             dateCreated = date.text.toString(),
             attendanceTitle = attendanceTitle.text.toString(),
             sessionId = selectedSessionId,

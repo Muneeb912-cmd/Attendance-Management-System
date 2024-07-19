@@ -3,7 +3,7 @@ package com.example.attendancemanagement.view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.attendancemanagement.models.StudentsRepository
+import com.example.attendancemanagement.models.repositories.StudentsRepository
 
 class StudentsViewModelFactory(private val repository: StudentsRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

@@ -1,6 +1,7 @@
 package com.example.attendancemanagement.ui
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,19 +9,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
-import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.attendancemanagement.R
-import com.example.attendancemanagement.models.AttendanceRepository
-import com.example.attendancemanagement.models.StudentsRepository
+import com.example.attendancemanagement.models.repositories.AttendanceRepository
+import com.example.attendancemanagement.models.repositories.StudentsRepository
 import com.example.attendancemanagement.models.User
 import com.example.attendancemanagement.view_model.AttendanceViewModel
 import com.example.attendancemanagement.view_model.StudentsViewModel
 import com.example.attendancemanagement.view_model.StudentsViewModelFactory
 
-import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.auth.FirebaseAuth
 
 class StudentDetails : Fragment() {
@@ -89,7 +88,13 @@ class StudentDetails : Fragment() {
     }
 
     private fun logOut() {
+        val sharedPreferences = requireActivity().getSharedPreferences("MyAppPrefs", Activity.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.clear()
+        editor.apply()
         FirebaseAuth.getInstance().signOut()
+
+
         findNavController().navigate(R.id.action_studentDetails_to_login_Signup)
 
     }
